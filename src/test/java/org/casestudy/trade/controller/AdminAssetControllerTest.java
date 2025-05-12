@@ -32,7 +32,6 @@ public class AdminAssetControllerTest {
         RestAssured.baseURI = "http://localhost";
         baseUrl = "http://localhost:" + port;
 
-        // Login as admin
         String loginJson = """
             {
               "username": "admin",
