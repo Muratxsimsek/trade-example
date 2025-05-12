@@ -48,6 +48,7 @@ public class CustomerAssetControllerTest {
 
         token = response.jsonPath().getString("token");
 
+        assetRepository.deleteAll();
         assetRepository.save(new AssetEntity("cus1", "TRY", 1500, 1000));
         assetRepository.save(new AssetEntity("cus1", "THYAO", 500, 300));
     }

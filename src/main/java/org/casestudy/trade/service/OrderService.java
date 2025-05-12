@@ -30,7 +30,7 @@ public class OrderService {
     @Transactional
     public void matchOrder(Long orderId) {
         logger.info("Matching order with ID: {}", orderId);
-        OrderEntity order = orderRepository.findById(orderId)
+        OrderEntity order = orderRepository.findByIdForUpdate(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
 
         if (!order.getStatus().equals(OrderStatus.PENDING)) {

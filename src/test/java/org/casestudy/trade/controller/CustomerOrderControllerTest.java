@@ -280,6 +280,7 @@ public class CustomerOrderControllerTest {
 
         token = response.jsonPath().getString("token");
 
+        assetRepository.deleteAll();
         AssetEntity asset = new AssetEntity("cus1", "TRY", 1500, 1000);
         assetRepository.save(asset);
     }

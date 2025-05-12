@@ -48,6 +48,7 @@ public class AdminAssetControllerTest {
 
         adminToken = response.jsonPath().getString("token");
 
+        assetRepository.deleteAll();
         assetRepository.save(new AssetEntity(customerName, "THYAO", 100, 50));
         assetRepository.save(new AssetEntity(customerName, "TRY", 2000, 2000));
     }

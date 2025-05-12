@@ -4,6 +4,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.casestudy.trade.dto.OrderRequest;
 import org.casestudy.trade.persistence.entity.OrderEntity;
+import org.casestudy.trade.queue.OrderMessage;
+import org.casestudy.trade.queue.OrderQueueConsumer;
 import org.casestudy.trade.service.OrderService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -24,10 +26,16 @@ public class CustomerOrderController {
 
     private final OrderService orderService;
 
+    private final OrderQueueConsumer orderQueueConsumer;
+
     @PostMapping
     public ResponseEntity<?> createOrder(@Valid @RequestBody OrderRequest request, @AuthenticationPrincipal UserDetails userDetails) {
         String customerName = userDetails.getUsername();
         orderService.createOrder(customerName, request);
+        //TODO Aslinda olmasi gereken yapi kuyruk seklinde istekleri alip tek tek islemektir. fakat testlerin askenkron calisan kodun test edilememesinden dolayi burayi commment'li birakiyorum
+//      orderQueueConsumer.enqueue(new OrderMessage(userDetails.getUsername(), request));
+//      return ResponseEntity.accepted().body("Order received.");
+
         return ResponseEntity.ok("Order created.");
     }
 

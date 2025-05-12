@@ -23,6 +23,9 @@ public class AssetEntity {
     @Min(value = 0)
     private int usableSize;
 
+    @Version
+    private Long version;
+
     public AssetEntity(String customerName, String assetName, int size, int usableSize) {
         this.id = new AssetId(customerName, assetName);
         this.size = size;
