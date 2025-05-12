@@ -55,7 +55,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (2/2)
+    (3/3)
   </span>
 </td>
 <td class="coverageStat">
@@ -63,7 +63,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (4/4)
+    (9/9)
   </span>
 </td>
 </tr>
@@ -80,6 +80,8 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;import lombok.RequiredArgsConstructor;
 &nbsp;import org.casestudy.trade.persistence.entity.OrderEntity;
 &nbsp;import org.casestudy.trade.service.OrderService;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
 &nbsp;import org.springframework.http.ResponseEntity;
 &nbsp;import org.springframework.security.access.prepost.PreAuthorize;
 &nbsp;import org.springframework.web.bind.annotation.*;
@@ -92,20 +94,26 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;@PreAuthorize(&quot;hasRole(&#39;ADMIN&#39;)&quot;)
 &nbsp;public class AdminOrderController {
 &nbsp;
+<b class="fc">&nbsp;    private static final Logger logger = LoggerFactory.getLogger(AdminOrderController.class);</b>
+&nbsp;
 &nbsp;    private final OrderService orderService;
 &nbsp;
 &nbsp;    @PostMapping(&quot;/match/{orderId}&quot;)
 &nbsp;    public ResponseEntity&lt;String&gt; matchOrder(@PathVariable Long orderId) {
+<b class="fc">&nbsp;        logger.info(&quot;Admin matching order with ID: {}&quot;, orderId);</b>
 &nbsp;        try {
 <b class="fc">&nbsp;            orderService.matchOrder(orderId);</b>
+<b class="fc">&nbsp;            logger.info(&quot;Order with ID {} matched successfully.&quot;, orderId);</b>
 <b class="fc">&nbsp;            return ResponseEntity.ok(&quot;Order matched successfully.&quot;);</b>
 &nbsp;        } catch (IllegalArgumentException e) {
+<b class="fc">&nbsp;            logger.warn(&quot;Failed to match order with ID {}: {}&quot;, orderId, e.getMessage());</b>
 <b class="fc">&nbsp;            return ResponseEntity.badRequest().body(e.getMessage());</b>
 &nbsp;        }
 &nbsp;    }
 &nbsp;
 &nbsp;    @GetMapping(&quot;/all&quot;)
 &nbsp;    public ResponseEntity&lt;List&lt;OrderEntity&gt;&gt; listAllOrders() {
+<b class="fc">&nbsp;        logger.info(&quot;Admin fetching all orders.&quot;);</b>
 <b class="fc">&nbsp;        return ResponseEntity.ok(orderService.getAllOrders());</b>
 &nbsp;    }
 &nbsp;}
@@ -133,7 +141,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2025-05-12 18:55</div>
+    <div style="float:right;">generated on 2025-05-12 19:11</div>
 </div>
 </body>
 </html>

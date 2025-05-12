@@ -5,7 +5,7 @@
 <html id="htmlId">
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
-  <title>Coverage Report > CustomerEntity</title>
+  <title>Coverage Report > OrderEntity</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -22,7 +22,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     <a href="../index.html">org.casestudy.trade.persistence.entity</a>
 </div>
 
-<h1>Coverage Summary for Class: CustomerEntity (org.casestudy.trade.persistence.entity)</h1>
+<h1>Coverage Summary for Class: OrderEntity (org.casestudy.trade.persistence.entity)</h1>
 
 <table class="coverageStats">
 
@@ -30,10 +30,10 @@ Current scope:     <a href="../../index.html">all classes</a>
   <th class="name">Class</th>
 </tr>
   <tr>
-    <td class="name">CustomerEntity$HibernateInstantiator</td>
+    <td class="name">OrderEntity$HibernateInstantiator</td>
   </tr>
   <tr>
-    <td class="name">CustomerEntity$HibernateProxy</td>
+    <td class="name">OrderEntity$HibernateProxy</td>
   </tr>
 <tr>
   <td class="name"><strong>Total</strong></td>
@@ -47,29 +47,42 @@ Current scope:     <a href="../../index.html">all classes</a>
 <pre>
 <code class="sourceCode" id="sourceCode">&nbsp;package org.casestudy.trade.persistence.entity;
 &nbsp;
-&nbsp;
-&nbsp;import jakarta.persistence.Entity;
-&nbsp;import jakarta.persistence.Id;
-&nbsp;import jakarta.persistence.Table;
+&nbsp;import jakarta.persistence.*;
 &nbsp;import lombok.AllArgsConstructor;
 &nbsp;import lombok.Data;
 &nbsp;import lombok.NoArgsConstructor;
+&nbsp;import org.casestudy.trade.enums.OrderSide;
+&nbsp;import org.casestudy.trade.enums.OrderStatus;
+&nbsp;
+&nbsp;import java.math.BigDecimal;
+&nbsp;import java.time.LocalDateTime;
 &nbsp;
 &nbsp;@Entity
-&nbsp;@Table(name = &quot;CUSTOMER&quot;)
+&nbsp;@Table(name = &quot;ORDERS&quot;)
 &nbsp;@Data
 &nbsp;@NoArgsConstructor
 &nbsp;@AllArgsConstructor
-&nbsp;public class CustomerEntity {
+&nbsp;public class OrderEntity {
 &nbsp;
 &nbsp;    @Id
-&nbsp;    private String id;
+&nbsp;    @GeneratedValue(strategy = GenerationType.IDENTITY)
+&nbsp;    private Long id;
 &nbsp;
-&nbsp;    private String username;
+&nbsp;    private String customerName;
 &nbsp;
-&nbsp;    private String password;
+&nbsp;    private String assetName;
 &nbsp;
-&nbsp;    private String role;
+&nbsp;    @Enumerated(EnumType.STRING)
+&nbsp;    private OrderSide side;
+&nbsp;
+&nbsp;    private int size;
+&nbsp;
+&nbsp;    private BigDecimal price;
+&nbsp;
+&nbsp;    @Enumerated(EnumType.STRING)
+&nbsp;    private OrderStatus status;
+&nbsp;
+&nbsp;    private LocalDateTime createDate;
 &nbsp;}
 </code>
 </pre>
@@ -94,7 +107,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2025-05-12 18:55</div>
+    <div style="float:right;">generated on 2025-05-12 19:11</div>
 </div>
 </body>
 </html>

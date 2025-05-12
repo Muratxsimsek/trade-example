@@ -55,7 +55,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (1/1)
+    (2/2)
   </span>
 </td>
 <td class="coverageStat">
@@ -63,7 +63,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (6/6)
+    (10/10)
   </span>
 </td>
 </tr>
@@ -82,6 +82,8 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;import org.casestudy.trade.dto.AuthRequest;
 &nbsp;import org.casestudy.trade.dto.AuthResponse;
 &nbsp;import org.casestudy.trade.security.JwtUtil;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
 &nbsp;import org.springframework.http.HttpStatus;
 &nbsp;import org.springframework.http.ResponseEntity;
 &nbsp;import org.springframework.security.authentication.AuthenticationManager;
@@ -102,12 +104,15 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;@RequiredArgsConstructor
 &nbsp;public class AuthController {
 &nbsp;
+<b class="fc">&nbsp;    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);</b>
+&nbsp;
 &nbsp;    private final AuthenticationManager authenticationManager;
 &nbsp;    private final JwtUtil jwtUtil;
 &nbsp;    private final UserDetailsService userDetailsService;
 &nbsp;
 &nbsp;    @PostMapping(&quot;/login&quot;)
 &nbsp;    public ResponseEntity&lt;?&gt; login(@Valid @RequestBody AuthRequest authRequest) {
+<b class="fc">&nbsp;        logger.info(&quot;Login attempt for username: {}&quot;, authRequest.getUsername());</b>
 &nbsp;        try {
 <b class="fc">&nbsp;            Authentication auth = authenticationManager.authenticate(</b>
 <b class="fc">&nbsp;                    new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));</b>
@@ -115,8 +120,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;            UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getUsername());</b>
 <b class="fc">&nbsp;            String token = jwtUtil.generateToken(userDetails);</b>
 &nbsp;
+<b class="fc">&nbsp;            logger.info(&quot;Login successful for username: {}&quot;, authRequest.getUsername());</b>
 <b class="fc">&nbsp;            return ResponseEntity.ok(new AuthResponse(token));</b>
 &nbsp;        } catch (BadCredentialsException ex) {
+<b class="fc">&nbsp;            logger.warn(&quot;Login failed for username: {}&quot;, authRequest.getUsername());</b>
 <b class="fc">&nbsp;            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(&quot;Invalid credentials&quot;);</b>
 &nbsp;        }
 &nbsp;    }
@@ -144,7 +151,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2025-05-12 18:55</div>
+    <div style="float:right;">generated on 2025-05-12 19:11</div>
 </div>
 </body>
 </html>

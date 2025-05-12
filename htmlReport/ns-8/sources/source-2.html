@@ -48,23 +48,23 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (5/5)
+    (6/6)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    61.5%
+    69.2%
   </span>
   <span class="absValue">
-    (16/26)
+    (18/26)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    74.4%
+    89.7%
   </span>
   <span class="absValue">
-    (58/78)
+    (78/87)
   </span>
 </td>
 </tr>
@@ -78,23 +78,23 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (5/5)
+    (6/6)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    61.5%
+    69.2%
   </span>
   <span class="absValue">
-    (16/26)
+    (18/26)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    74.4%
+    89.7%
   </span>
   <span class="absValue">
-    (58/78)
+    (78/87)
   </span>
 </td>
 </tr>
@@ -115,6 +115,8 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;import org.casestudy.trade.persistence.entity.OrderEntity;
 &nbsp;import org.casestudy.trade.persistence.repository.AssetRepository;
 &nbsp;import org.casestudy.trade.persistence.repository.OrderRepository;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
 &nbsp;import org.springframework.security.access.AccessDeniedException;
 &nbsp;import org.springframework.stereotype.Service;
 &nbsp;import org.springframework.transaction.annotation.Transactional;
@@ -127,11 +129,14 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;@RequiredArgsConstructor
 &nbsp;public class OrderService {
 &nbsp;
+<b class="fc">&nbsp;    private static final Logger logger = LoggerFactory.getLogger(OrderService.class);</b>
+&nbsp;
 &nbsp;    private final OrderRepository orderRepository;
 &nbsp;    private final AssetRepository assetRepository;
 &nbsp;
 &nbsp;    @Transactional
 &nbsp;    public void matchOrder(Long orderId) {
+<b class="fc">&nbsp;        logger.info(&quot;Matching order with ID: {}&quot;, orderId);</b>
 <b class="fc">&nbsp;        OrderEntity order = orderRepository.findById(orderId)</b>
 <b class="fc">&nbsp;                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Order not found&quot;));</b>
 &nbsp;
@@ -144,7 +149,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        int size = order.getSize();</b>
 <b class="fc">&nbsp;        BigDecimal price = order.getPrice();</b>
 &nbsp;
-<b class="pc">&nbsp;        if (order.getSide().equals(OrderSide.BUY)) {</b>
+<b class="fc">&nbsp;        if (order.getSide().equals(OrderSide.BUY)) {</b>
 &nbsp;
 <b class="fc">&nbsp;            AssetEntity asset = assetRepository.findByIdCustomerNameAndIdAssetName(customerId, assetName)</b>
 <b class="fc">&nbsp;                    .orElse(new AssetEntity(customerId, assetName, 0, 0));</b>
@@ -156,29 +161,31 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 <b class="pc">&nbsp;        } else if (order.getSide().equals(OrderSide.SELL)) {</b>
 &nbsp;
-<b class="nc">&nbsp;            AssetEntity asset = assetRepository.findByIdCustomerNameAndIdAssetName(customerId, assetName)</b>
-<b class="nc">&nbsp;                    .orElseThrow(() -&gt; new IllegalArgumentException(&quot;No asset to sell&quot;));</b>
+<b class="fc">&nbsp;            AssetEntity asset = assetRepository.findByIdCustomerNameAndIdAssetName(customerId, assetName)</b>
+<b class="fc">&nbsp;                    .orElseThrow(() -&gt; new IllegalArgumentException(&quot;No asset to sell&quot;));</b>
 &nbsp;
-<b class="nc">&nbsp;            asset.setSize(asset.getSize() - size);</b>
-<b class="nc">&nbsp;            asset.setUsableSize(asset.getUsableSize() - size);</b>
-<b class="nc">&nbsp;            assetRepository.save(asset);</b>
+<b class="fc">&nbsp;            asset.setSize(asset.getSize() - size);</b>
+<b class="fc">&nbsp;            asset.setUsableSize(asset.getUsableSize() - size);</b>
+<b class="fc">&nbsp;            assetRepository.save(asset);</b>
 &nbsp;
-<b class="nc">&nbsp;            BigDecimal totalValue = price.multiply(BigDecimal.valueOf(size));</b>
-<b class="nc">&nbsp;            AssetEntity tryAsset = assetRepository.findByIdCustomerNameAndIdAssetName(customerId, &quot;TRY&quot;)</b>
-<b class="nc">&nbsp;                    .orElse(new AssetEntity(customerId, &quot;TRY&quot;, 0, 0));</b>
+<b class="fc">&nbsp;            BigDecimal totalValue = price.multiply(BigDecimal.valueOf(size));</b>
+<b class="fc">&nbsp;            AssetEntity tryAsset = assetRepository.findByIdCustomerNameAndIdAssetName(customerId, &quot;TRY&quot;)</b>
+<b class="fc">&nbsp;                    .orElse(new AssetEntity(customerId, &quot;TRY&quot;, 0, 0));</b>
 &nbsp;
-<b class="nc">&nbsp;            tryAsset.setSize(tryAsset.getSize() + totalValue.intValue());</b>
-<b class="nc">&nbsp;            tryAsset.setUsableSize(tryAsset.getUsableSize() + totalValue.intValue());</b>
-<b class="nc">&nbsp;            assetRepository.save(tryAsset);</b>
+<b class="fc">&nbsp;            tryAsset.setSize(tryAsset.getSize() + totalValue.intValue());</b>
+<b class="fc">&nbsp;            tryAsset.setUsableSize(tryAsset.getUsableSize() + totalValue.intValue());</b>
+<b class="fc">&nbsp;            assetRepository.save(tryAsset);</b>
 &nbsp;        }
 &nbsp;
 <b class="fc">&nbsp;        order.setStatus(OrderStatus.MATCHED);</b>
 <b class="fc">&nbsp;        orderRepository.save(order);</b>
+<b class="fc">&nbsp;        logger.info(&quot;Order with ID {} matched successfully.&quot;, orderId);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;
 &nbsp;    @Transactional
 &nbsp;    public void createOrder(String customerName, OrderRequest request) {
+<b class="fc">&nbsp;        logger.info(&quot;Creating order for customer: {}&quot;, customerName);</b>
 <b class="fc">&nbsp;        String assetName = request.getAssetName();</b>
 <b class="fc">&nbsp;        int size = request.getSize();</b>
 <b class="fc">&nbsp;        BigDecimal price = request.getPrice();</b>
@@ -215,9 +222,11 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        order.setStatus(OrderStatus.PENDING);</b>
 &nbsp;
 <b class="fc">&nbsp;        orderRepository.save(order);</b>
+<b class="fc">&nbsp;        logger.info(&quot;Order created successfully for customer: {}&quot;, customerName);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    public List&lt;OrderEntity&gt; getOrders(String customerId, LocalDateTime start, LocalDateTime end) {
+<b class="fc">&nbsp;        logger.info(&quot;Fetching orders for customer: {} between {} and {}&quot;, customerId, start, end);</b>
 <b class="pc">&nbsp;        if (start != null &amp;&amp; end != null) {</b>
 <b class="fc">&nbsp;            return orderRepository.findByCustomerNameAndCreateDateBetween(customerId, start, end);</b>
 &nbsp;        }
@@ -226,6 +235,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;    @Transactional
 &nbsp;    public void cancelOrder(String customerId, Long orderId) {
+<b class="fc">&nbsp;        logger.info(&quot;Canceling order with ID: {} for customer: {}&quot;, orderId, customerId);</b>
 <b class="fc">&nbsp;        OrderEntity order = orderRepository.findById(orderId)</b>
 <b class="fc">&nbsp;                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Order not found&quot;));</b>
 &nbsp;
@@ -252,13 +262,14 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 <b class="fc">&nbsp;        order.setStatus(OrderStatus.CANCELED);</b>
 <b class="fc">&nbsp;        orderRepository.save(order);</b>
+<b class="fc">&nbsp;        logger.info(&quot;Order with ID {} canceled successfully.&quot;, orderId);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    public List&lt;OrderEntity&gt; getAllOrders() {
+<b class="fc">&nbsp;        logger.info(&quot;Fetching all orders.&quot;);</b>
 <b class="fc">&nbsp;        return orderRepository.findAll();</b>
 &nbsp;    }
 &nbsp;}
-&nbsp;
 </code>
 </pre>
 </div>
@@ -282,7 +293,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2025-05-12 18:55</div>
+    <div style="float:right;">generated on 2025-05-12 19:11</div>
 </div>
 </body>
 </html>

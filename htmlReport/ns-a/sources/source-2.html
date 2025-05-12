@@ -5,7 +5,7 @@
 <html id="htmlId">
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
-  <title>Coverage Report > CustomerRepository</title>
+  <title>Coverage Report > AssetRepository</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -22,14 +22,14 @@ Current scope:     <a href="../../index.html">all classes</a>
     <a href="../index.html">org.casestudy.trade.persistence.repository</a>
 </div>
 
-<h1>Coverage Summary for Class: CustomerRepository (org.casestudy.trade.persistence.repository)</h1>
+<h1>Coverage Summary for Class: AssetRepository (org.casestudy.trade.persistence.repository)</h1>
 
 <table class="coverageStats">
 <tr>
   <th class="name">Class</th>
 </tr>
 <tr>
-  <td class="name">CustomerRepository</td>
+  <td class="name">AssetRepository</td>
 </tr>
 
 </table>
@@ -41,13 +41,19 @@ Current scope:     <a href="../../index.html">all classes</a>
 <pre>
 <code class="sourceCode" id="sourceCode">&nbsp;package org.casestudy.trade.persistence.repository;
 &nbsp;
-&nbsp;import org.casestudy.trade.persistence.entity.CustomerEntity;
+&nbsp;import org.casestudy.trade.persistence.entity.AssetEntity;
 &nbsp;import org.springframework.data.jpa.repository.JpaRepository;
+&nbsp;import org.springframework.stereotype.Repository;
 &nbsp;
+&nbsp;import java.util.List;
 &nbsp;import java.util.Optional;
 &nbsp;
-&nbsp;public interface CustomerRepository extends JpaRepository&lt;CustomerEntity, String&gt; {
-&nbsp;    Optional&lt;CustomerEntity&gt; findByUsername(String username);
+&nbsp;@Repository
+&nbsp;public interface AssetRepository extends JpaRepository&lt;AssetEntity, Long&gt; {
+&nbsp;    Optional&lt;AssetEntity&gt; findByIdCustomerNameAndIdAssetName(String customerName, String assetName);
+&nbsp;
+&nbsp;    List&lt;AssetEntity&gt; findByIdCustomerName(String customerName);
+&nbsp;
 &nbsp;}
 </code>
 </pre>
@@ -72,7 +78,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2025-05-12 18:55</div>
+    <div style="float:right;">generated on 2025-05-12 19:11</div>
 </div>
 </body>
 </html>
